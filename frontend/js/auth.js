@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             console.log('Intentando conectar con el servidor...');
-            const response = await fetch('http://localhost:3000/api/auth/registro', {
+            const response = await fetch('https://voleibol.onrender.com/api/auth/registro', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Error completo:', error);
-            mostrarError('Error al conectar con el servidor. Asegúrate de que el servidor esté corriendo en http://localhost:3000', registerForm);
+            mostrarError('Error al conectar con el servidor. Asegúrate de que el servidor esté corriendo en https://voleibol.onrender.com', registerForm);
         }
     });
 
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             console.log('Intentando conectar con el servidor...');
-            const response = await fetch('http://localhost:3000/api/auth/login', {
+            const response = await fetch('https://voleibol.onrender.com/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Error completo:', error);
-            mostrarError('Error al conectar con el servidor. Asegúrate de que el servidor esté corriendo en http://localhost:3000', loginForm);
+            mostrarError('Error al conectar con el servidor. Asegúrate de que el servidor esté corriendo en https://voleibol.onrender.com', loginForm);
         }
     });
 

@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Obtener nombre del entrenador
     if (usuario.entrenadorId) {
         try {
-            const res = await fetch(`http://localhost:3000/api/deportistas/entrenador/${usuario.entrenadorId}`);
+            const res = await fetch(`https://voleibol.onrender.com/api/deportistas/entrenador/${usuario.entrenadorId}`);
             const entrenadores = await res.json();
             if (Array.isArray(entrenadores) && entrenadores.length > 0) {
                 document.getElementById('entrenadorCorreo').textContent = entrenadores[0].nombre;
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
 
         try {
-            const res = await fetch('http://localhost:3000/api/entrenamientos', {
+            const res = await fetch('https://voleibol.onrender.com/api/entrenamientos', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -84,10 +84,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const contenedor = document.getElementById('estadisticasDeportista');
         contenedor.innerHTML = 'Cargando...';
         try {
-            const res = await fetch(`http://localhost:3000/api/entrenamientos/deportista/${usuario._id}`);
+            const res = await fetch(`https://voleibol.onrender.com/api/entrenamientos/deportista/${usuario._id}`);
             const entrenamientos = await res.json();
             // Obtener estadísticas agregadas
-            const resStats = await fetch(`http://localhost:3000/api/entrenamientos/estadisticas/${usuario._id}`);
+            const resStats = await fetch(`https://voleibol.onrender.com/api/entrenamientos/estadisticas/${usuario._id}`);
             const data = await resStats.json();
             if (resStats.ok) {
                 let html = '<div class="row">';
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function mostrarEstadisticas() {
         try {
-            const response = await fetch(`http://localhost:3000/api/entrenamientos/estadisticas/${usuario._id}`);
+            const response = await fetch(`https://voleibol.onrender.com/api/entrenamientos/estadisticas/${usuario._id}`);
             if (!response.ok) throw new Error('Error al cargar estadísticas');
             const data = await response.json();
 

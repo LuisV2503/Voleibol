@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Cargar lista de deportistas asociados
     const listaDeportistas = document.getElementById('listaDeportistas');
-    fetch(`http://localhost:3000/api/deportistas/entrenador/${usuario._id}`)
+    fetch(`https://voleibol.onrender.com/api/deportistas/entrenador/${usuario._id}`)
         .then(res => {
             if (!res.ok) throw new Error('Error al cargar deportistas');
             return res.json();
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const estadisticasDiv = document.getElementById('estadisticasGenerales');
         rankingDiv.innerHTML = 'Cargando...';
         estadisticasDiv.innerHTML = 'Cargando...';
-        fetch(`http://localhost:3000/api/deportistas/estadisticas/${usuario._id}`)
+        fetch(`https://voleibol.onrender.com/api/deportistas/estadisticas/${usuario._id}`)
             .then(res => res.json())
             .then(data => {
                 // Filtrar por tipo de actividad
@@ -201,7 +201,7 @@ async function mostrarModalDeportista(deportista) {
     async function cargarDatosModal(tipoActividad) {
         container.innerHTML = '<div class="text-center">Cargando estadísticas...</div>';
         try {
-            const res = await fetch(`http://localhost:3000/api/entrenamientos/deportista/${deportista._id}`);
+            const res = await fetch(`https://voleibol.onrender.com/api/entrenamientos/deportista/${deportista._id}`);
             if (!res.ok) throw new Error('No se pudieron cargar los entrenamientos');
             const entrenamientos = await res.json();
             console.log('Entrenamientos recibidos:', entrenamientos);
