@@ -4,7 +4,7 @@ const Usuario = require('../models/Usuario');
 // Crear nuevo entrenamiento
 exports.crearEntrenamiento = async (req, res) => {
     try {
-        const { ejercicios, duracion, notas } = req.body;
+        const { ejercicios, duracion, notas, tipoSesion } = req.body;
         const deportistaId = req.body.deportistaId;
 
         // Verificar que el deportista existe
@@ -17,7 +17,8 @@ exports.crearEntrenamiento = async (req, res) => {
             deportistaId,
             ejercicios,
             duracion,
-            notas
+            notas,
+            tipoSesion
         });
 
         await entrenamiento.save();

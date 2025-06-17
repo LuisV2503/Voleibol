@@ -11,6 +11,12 @@ const entrenamientoSchema = new mongoose.Schema({
         required: true,
         default: Date.now
     },
+    tipoSesion: {
+        type: String,
+        enum: ['entrenamiento', 'partido_entrenamiento', 'partido'],
+        required: true,
+        default: 'entrenamiento'
+    },
     ejercicios: [{
         tipo: {
             type: String,

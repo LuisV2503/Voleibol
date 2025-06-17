@@ -21,6 +21,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/voleibol-
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/entrenamientos', require('./routes/entrenamientos'));
 app.use('/api/deportistas', require('./routes/deportistas'));
+app.use('/api/clubes', require('./routes/clubes'));
 
 // Puerto
 const PORT = process.env.PORT || 3000;
