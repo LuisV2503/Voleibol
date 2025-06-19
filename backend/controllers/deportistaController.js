@@ -29,8 +29,23 @@ exports.getDeportistas = async (req, res) => {
     }
 };
 
-// Obtener estadísticas generales de todos los deportistas
-exports.getEstadisticasGenerales = async (req, res) => {
+// Obtener información de un entrenador por ID
+exports.obtenerEntrenadorInfo = async (req, res) => {
+    try {
+        const { entrenadorId } = req.params;
+        const entrenador = await Usuario.findById(entrenadorId).select('nombre correo');
+        if (!entrenador || entrenador.rol !== 'entrenador') {
+            return res.status(404).json({ mensaje: 'Entrenador no encontrado' });
+        }
+        res.json(entrenador);
+    } catch (error) {
+        console.error('Error al obtener entrenador:', error);
+        res.status(500).json({ mensaje: 'Error en el servidor' });
+    }
+};
+
+// Obtener estadísticas de todos los deportistas de un entrenador
+exports.obtenerEstadisticasEntrenador = async (req, res) => {
     try {
         const { entrenadorId } = req.params;
         
@@ -53,7 +68,7 @@ exports.getEstadisticasGenerales = async (req, res) => {
 
             entrenamientos.forEach(entrenamiento => {
                 entrenamiento.ejercicios.forEach(ejercicio => {
-                    if (!tiposValidos.includes(ejercicio.tipo)) return; // Ignorar ejercicios no válidos
+                    if (!tiposValidos.includes(ejercicio.tipo)) return;
                     stats[ejercicio.tipo].total++;
                     if (ejercicio.efectividad) {
                         stats[ejercicio.tipo].exitosos++;
@@ -85,22 +100,4 @@ exports.getEstadisticasGenerales = async (req, res) => {
         console.error('Error al obtener estadísticas generales:', error);
         res.status(500).json({ mensaje: 'Error en el servidor' });
     }
-<<<<<<< HEAD
-};
-
-// Obtener información de un entrenador por ID
-exports.getEntrenadorById = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const entrenador = await Usuario.findById(id).select('-password');
-        if (!entrenador || entrenador.rol !== 'entrenador') {
-            return res.status(404).json({ mensaje: 'Entrenador no encontrado' });
-        }
-        res.json(entrenador);
-    } catch (error) {
-        console.error('Error al obtener entrenador:', error);
-        res.status(500).json({ mensaje: 'Error en el servidor' });
-    }
-=======
->>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
 }; 

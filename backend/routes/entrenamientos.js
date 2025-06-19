@@ -6,9 +6,9 @@ const entrenamientoController = require('../controllers/entrenamientoController'
 router.post('/', entrenamientoController.crearEntrenamiento);
 
 // Obtener entrenamientos de un deportista
-router.get('/deportista/:deportistaId', entrenamientoController.getEntrenamientosDeportista);
+router.get('/deportista/:deportistaId', entrenamientoController.obtenerEntrenamientosDeportista);
 
 // Obtener estadísticas de un deportista
-router.get('/estadisticas/:deportistaId', entrenamientoController.getEstadisticasDeportista);
+router.get('/estadisticas/:deportistaId', entrenamientoController.obtenerEstadisticasDeportista);
 
 module.exports = router; 

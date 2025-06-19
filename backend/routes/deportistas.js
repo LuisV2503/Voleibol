@@ -2,16 +2,13 @@ const express = require('express');
 const router = express.Router();
 const deportistaController = require('../controllers/deportistaController');
 
-// Obtener lista de deportistas de un entrenador
-router.get('/entrenador/:entrenadorId', deportistaController.getDeportistas);
+// Obtener todos los deportistas de un entrenador
+router.get('/entrenador/:entrenadorId', deportistaController.obtenerDeportistasPorEntrenador);
 
-// Obtener estadísticas generales de todos los deportistas
-router.get('/estadisticas/:entrenadorId', deportistaController.getEstadisticasGenerales);
+// Obtener información de un entrenador por su ID
+router.get('/entrenador-info/:entrenadorId', deportistaController.obtenerEntrenadorInfo);
 
-<<<<<<< HEAD
-// Obtener información de un entrenador por ID
-router.get('/entrenador-info/:id', deportistaController.getEntrenadorById);
+// Obtener estadísticas de todos los deportistas de un entrenador
+router.get('/estadisticas/:entrenadorId', deportistaController.obtenerEstadisticasEntrenador);
 
-=======
->>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
 module.exports = router; 

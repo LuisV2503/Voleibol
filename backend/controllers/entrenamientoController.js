@@ -4,12 +4,7 @@ const Usuario = require('../models/Usuario');
 // Crear nuevo entrenamiento
 exports.crearEntrenamiento = async (req, res) => {
     try {
-<<<<<<< HEAD
-        const { ejercicios, duracion, notas, fecha } = req.body;
-=======
-        const { ejercicios, duracion, notas } = req.body;
->>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
-        const deportistaId = req.body.deportistaId;
+        const { deportistaId, clubId, fecha, tipoSesion, ejercicios } = req.body;
 
         // Verificar que el deportista existe
         const deportista = await Usuario.findById(deportistaId);
@@ -19,13 +14,10 @@ exports.crearEntrenamiento = async (req, res) => {
 
         const entrenamiento = new Entrenamiento({
             deportistaId,
-<<<<<<< HEAD
+            clubId,
             fecha,
-=======
->>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
-            ejercicios,
-            duracion,
-            notas
+            tipoSesion,
+            ejercicios
         });
 
         await entrenamiento.save();
@@ -37,7 +29,7 @@ exports.crearEntrenamiento = async (req, res) => {
 };
 
 // Obtener entrenamientos de un deportista
-exports.getEntrenamientosDeportista = async (req, res) => {
+exports.obtenerEntrenamientosDeportista = async (req, res) => {
     try {
         const { deportistaId } = req.params;
         const entrenamientos = await Entrenamiento.find({ deportistaId })
@@ -50,7 +42,7 @@ exports.getEntrenamientosDeportista = async (req, res) => {
 };
 
 // Obtener estadísticas de un deportista
-exports.getEstadisticasDeportista = async (req, res) => {
+exports.obtenerEstadisticasDeportista = async (req, res) => {
     try {
         const { deportistaId } = req.params;
         const entrenamientos = await Entrenamiento.find({ deportistaId });
@@ -64,7 +56,7 @@ exports.getEstadisticasDeportista = async (req, res) => {
 
         entrenamientos.forEach(entrenamiento => {
             entrenamiento.ejercicios.forEach(ejercicio => {
-                if (!tiposValidos.includes(ejercicio.tipo)) return; // Ignorar ejercicios no válidos
+                if (!tiposValidos.includes(ejercicio.tipo)) return;
                 estadisticas[ejercicio.tipo].total++;
                 if (ejercicio.efectividad) {
                     estadisticas[ejercicio.tipo].exitosos++;
