@@ -1,0 +1,177 @@
+/* Estilos generales */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+/* Estilos para formularios */
+.form-control {
+    border-radius: 8px;
+    padding: 0.75rem;
+    border: 1px solid #dee2e6;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
+    border-color: #80bdff;
+}
+
+.btn-primary {
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-weight: 500;
+    background-color: #0d6efd;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+}
+
+/* Estilos para mensajes de error */
+.alert {
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+/* Estilos para enlaces */
+a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #0a58ca;
+    text-decoration: underline;
+}
+
+/* Estilos para campos específicos de rol */
+#entrenadorFields,
+#deportistaFields {
+    transition: all 0.3s ease;
+}
+
+/* Estilos para el título */
+h2 {
+    color: #212529;
+    font-weight: 600;
+}
+
+/* Estilos para las etiquetas */
+.form-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+/* Estilos para los radio buttons */
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* Estilos para las pestañas */
+.nav-tabs {
+    border-bottom: 2px solid #dee2e6;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    color: #6c757d;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    margin-right: 0.5rem;
+    border-radius: 8px 8px 0 0;
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+    border: none;
+    color: #0d6efd;
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+.nav-tabs .nav-link.active {
+    color: #0d6efd;
+    background-color: #fff;
+    border: none;
+    border-bottom: 2px solid #0d6efd;
+}
+
+.tab-content {
+    padding-top: 1rem;
+}
+
+.graficas-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+.grafica-eje-x {
+  flex: 1 1 250px;
+  min-width: 220px;
+  max-width: 300px;
+  position: relative;
+  height: 180px;
+  margin: 20px 0 20px 0;
+  border-left: 2px solid #222;
+  background: #fff;
+}
+.linea-horizontal {
+  position: absolute;
+  left: 0; right: 0;
+  top: 60%;
+  height: 2px;
+  background: #222;
+}
+.punto-efectividad {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #007bff;
+  border: 2px solid #fff;
+  box-shadow: 0 0 2px #222;
+  transform: translate(-50%, 50%);
+  z-index: 2;
+}
+.dia-label {
+  position: absolute;
+  top: 70%;
+  font-size: 1.1em;
+  left: 0;
+  width: 40px;
+  text-align: center;
+  transform: translateX(-50%);
+  color: #222;
+}
+.mes-label {
+  position: absolute;
+  top: 90%;
+  font-size: 1.1em;
+  left: 0;
+  width: 80px;
+  text-align: center;
+  font-weight: bold;
+  color: #007bff;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+.actividad-label {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #222;
+} 
