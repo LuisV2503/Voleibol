@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+<<<<<<< HEAD
     const API_URL = 'https://voleibol.onrender.com';
 
+=======
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
     // Elementos del formulario de registro
     const registerForm = document.getElementById('registerForm');
     const entrenadorFields = document.getElementById('entrenadorFields');
@@ -50,7 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             console.log('Intentando conectar con el servidor...');
+<<<<<<< HEAD
             const response = await fetch(`${API_URL}/api/auth/registro`, {
+=======
+            const response = await fetch('https://voleibol.onrender.com/api/auth/registro', {
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -79,7 +86,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Error completo:', error);
+<<<<<<< HEAD
             mostrarError('Error al conectar con el servidor.', registerForm);
+=======
+            mostrarError('Error al conectar con el servidor. Asegúrate de que el servidor esté corriendo en https://voleibol.onrender.com', registerForm);
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
         }
     });
 
@@ -95,7 +106,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             console.log('Intentando conectar con el servidor...');
+<<<<<<< HEAD
             const response = await fetch(`${API_URL}/api/auth/login`, {
+=======
+            const response = await fetch('https://voleibol.onrender.com/api/auth/login', {
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -109,12 +124,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 console.log('Login exitoso');
+<<<<<<< HEAD
                 // Guardar datos del usuario y el token en localStorage
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('usuario', JSON.stringify(data.usuario));
                 
                 // Redirigir según el rol
                 if (data.usuario.rol === 'entrenador') {
+=======
+                // Guardar datos del usuario en localStorage
+                localStorage.setItem('usuario', JSON.stringify(data));
+                
+                // Redirigir según el rol
+                if (data.rol === 'entrenador') {
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
                     window.location.href = 'entrenador.html';
                 } else {
                     window.location.href = 'deportista.html';
@@ -125,7 +148,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Error completo:', error);
+<<<<<<< HEAD
             mostrarError('Error al conectar con el servidor.', loginForm);
+=======
+            mostrarError('Error al conectar con el servidor. Asegúrate de que el servidor esté corriendo en https://voleibol.onrender.com', loginForm);
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
         }
     });
 

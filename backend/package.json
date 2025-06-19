@@ -1,6 +1,7 @@
 {
   "name": "voleibol-app-backend",
   "version": "1.0.0",
+<<<<<<< HEAD
   "description": "Backend para la aplicación de seguimiento de voleibol.",
   "main": "server.js",
   "scripts": {
@@ -25,5 +26,22 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.2"
+=======
+  "description": "Backend para aplicación de seguimiento de entrenamiento de voleibol",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.6.3",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
   }
 } 

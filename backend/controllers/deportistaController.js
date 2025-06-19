@@ -85,6 +85,7 @@ exports.getEstadisticasGenerales = async (req, res) => {
         console.error('Error al obtener estadísticas generales:', error);
         res.status(500).json({ mensaje: 'Error en el servidor' });
     }
+<<<<<<< HEAD
 };
 
 // Obtener información de un entrenador por ID
@@ -100,4 +101,6 @@ exports.getEntrenadorById = async (req, res) => {
         console.error('Error al obtener entrenador:', error);
         res.status(500).json({ mensaje: 'Error en el servidor' });
     }
+=======
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
 }; 

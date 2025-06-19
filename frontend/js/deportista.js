@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', async () => {
+<<<<<<< HEAD
     const API_URL = 'https://voleibol.onrender.com';
 
+=======
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
     // Verificar sesión
     const usuario = JSON.parse(localStorage.getItem('usuario'));
     if (!usuario || usuario.rol !== 'deportista') {
@@ -8,6 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
+<<<<<<< HEAD
     // Configuración de los selectores de fecha
     const months = [
         { name: "Enero", days: 31 },
@@ -83,6 +87,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Inicializar días
     updateDays();
 
+=======
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
     // Mostrar datos del perfil
     document.getElementById('deportistaNombre').textContent = usuario.nombre;
     document.getElementById('deportistaCorreo').textContent = usuario.correo;
@@ -90,10 +96,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Obtener nombre del entrenador
     if (usuario.entrenadorId) {
         try {
+<<<<<<< HEAD
             const res = await fetch(`${API_URL}/api/usuarios/${usuario.entrenadorId}`);
             const entrenador = await res.json();
             if (entrenador && entrenador.nombre) {
                 document.getElementById('entrenadorCorreo').textContent = entrenador.nombre;
+=======
+            const res = await fetch(`https://voleibol.onrender.com/api/deportistas/entrenador/${usuario.entrenadorId}`);
+            const entrenadores = await res.json();
+            if (Array.isArray(entrenadores) && entrenadores.length > 0) {
+                document.getElementById('entrenadorCorreo').textContent = entrenadores[0].nombre;
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
             } else {
                 document.getElementById('entrenadorCorreo').textContent = 'No disponible';
             }
@@ -110,6 +123,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.location.href = 'index.html';
     });
 
+<<<<<<< HEAD
     // Cargar clubes del deportista
     async function cargarClubesDeportista() {
         try {
@@ -152,17 +166,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Cargar clubes al iniciar
     cargarClubesDeportista();
 
+=======
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
     // Manejar envío del formulario de entrenamiento
     const entrenamientoForm = document.getElementById('entrenamientoForm');
     entrenamientoForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
+<<<<<<< HEAD
         const clubId = document.getElementById('clubSeleccionado').value;
         if (!clubId) {
             mostrarMensaje('Por favor selecciona un club', 'danger');
             return;
         }
 
+=======
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
         // Calcular efectividad por ejercicio
         const ejercicios = [
             'saque', 'armada', 'remate', 'bloqueo', 'defensa', 'recepcion', 'asistencia'
@@ -170,12 +189,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             const buenos = parseInt(document.getElementById(`${tipo}_buenos`).value) || 0;
             const malos = parseInt(document.getElementById(`${tipo}_malos`).value) || 0;
             const total = buenos + malos;
+<<<<<<< HEAD
+=======
+            // Se envía un array de tantos ejercicios como repeticiones, para mantener compatibilidad con el backend y estadísticas
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
             return Array.from({length: total}, (_, i) => ({
                 tipo,
                 efectividad: i < buenos
             }));
         }).flat();
 
+<<<<<<< HEAD
         // Construir la fecha en formato YYYY-MM-DD
         const year = yearSelect.value;
         const month = monthSelect.value.padStart(2, '0');
@@ -187,11 +211,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             clubId: clubId,
             fecha: fecha,
             ejercicios,
+=======
+        const data = {
+            deportistaId: usuario._id,
+            fecha: document.getElementById('fecha').value,
+            ejercicios,
+            notas: document.getElementById('notas').value,
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
             tipoSesion: tipoSesionInput.value
         };
 
         try {
+<<<<<<< HEAD
             const res = await fetch(`${API_URL}/api/entrenamientos`, {
+=======
+            const res = await fetch('https://voleibol.onrender.com/api/entrenamientos', {
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -209,6 +244,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+<<<<<<< HEAD
     // Llamar a cargarEstadisticas siempre al cargar la página
     cargarEstadisticas();
 
@@ -355,14 +391,24 @@ Total ejercicios: ${dato.total}</title>
     }
 
     // Llamar a la nueva gráfica personalizada por actividad
+=======
+    // Mostrar estadísticas simples
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
     async function cargarEstadisticas() {
         const contenedor = document.getElementById('estadisticasDeportista');
         contenedor.innerHTML = 'Cargando...';
         try {
+<<<<<<< HEAD
             const res = await fetch(`${API_URL}/api/entrenamientos/deportista/${usuario._id}`);
             const entrenamientos = await res.json();
             // Obtener estadísticas agregadas
             const resStats = await fetch(`${API_URL}/api/entrenamientos/estadisticas/${usuario._id}`);
+=======
+            const res = await fetch(`https://voleibol.onrender.com/api/entrenamientos/deportista/${usuario._id}`);
+            const entrenamientos = await res.json();
+            // Obtener estadísticas agregadas
+            const resStats = await fetch(`https://voleibol.onrender.com/api/entrenamientos/estadisticas/${usuario._id}`);
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
             const data = await resStats.json();
             if (resStats.ok) {
                 let html = '<div class="row">';
@@ -371,8 +417,13 @@ Total ejercicios: ${dato.total}</title>
                 });
                 html += '</div>';
                 contenedor.innerHTML = html;
+<<<<<<< HEAD
                 // Graficar nueva línea personalizada por actividad
                 graficarLineaPorActividad(entrenamientos);
+=======
+                // Graficar evolución
+                graficarRendimiento(entrenamientos);
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
             } else {
                 contenedor.innerHTML = '<span class="text-danger">No se pudieron cargar las estadísticas.</span>';
             }
@@ -381,6 +432,70 @@ Total ejercicios: ${dato.total}</title>
         }
     }
 
+<<<<<<< HEAD
+=======
+    function graficarRendimiento(entrenamientos) {
+        const container = document.getElementById('graficasEvolucionContainer');
+        container.innerHTML = '';
+        // Agrupar por fecha
+        const fechas = [];
+        const datos = {
+            saque: [], armada: [], remate: [], bloqueo: [], defensa: [], recepcion: [], asistencia: []
+        };
+        entrenamientos.slice().reverse().forEach(ent => {
+            const fecha = new Date(ent.fecha).toLocaleDateString();
+            fechas.push(fecha);
+            // Calcular % efectividad por ejercicio ese día
+            const tipos = {saque:[],armada:[],remate:[],bloqueo:[],defensa:[],recepcion:[],asistencia:[]};
+            ent.ejercicios.forEach(ej => tipos[ej.tipo].push(ej.efectividad));
+            Object.keys(datos).forEach(tipo => {
+                const arr = tipos[tipo];
+                const pct = arr.length ? (arr.filter(x=>x).length/arr.length)*100 : null;
+                datos[tipo].push(pct);
+            });
+        });
+        // Colores para cada habilidad
+        const colores = {
+            saque: '#0d6efd',
+            armada: '#198754',
+            remate: '#dc3545',
+            bloqueo: '#ffc107',
+            defensa: '#6f42c1',
+            recepcion: '#0dcaf0',
+            asistencia: '#fd7e14'
+        };
+        // Crear una gráfica de línea para cada habilidad
+        Object.keys(datos).forEach(tipo => {
+            const div = document.createElement('div');
+            div.className = 'col-12 col-md-4 mb-3';
+            div.innerHTML = `<h6 class='text-center mb-1'>${tipo.charAt(0).toUpperCase() + tipo.slice(1)}</h6><canvas id='grafica-evolucion-${tipo}' height='80'></canvas>`;
+            container.appendChild(div);
+            const ctx = document.getElementById(`grafica-evolucion-${tipo}`).getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: fechas,
+                    datasets: [{
+                        label: tipo.charAt(0).toUpperCase() + tipo.slice(1),
+                        data: datos[tipo],
+                        borderColor: colores[tipo],
+                        backgroundColor: colores[tipo] + '22', // color translúcido
+                        spanGaps: true
+                    }]
+                },
+                options: {
+                    plugins: {legend: {display: false}},
+                    scales: {y: {min:0,max:100,ticks:{callback:v=>v+'%'}}},
+                    elements: {point: {radius: 2}},
+                    layout: {padding: 0}
+                }
+            });
+        });
+    }
+
+    cargarEstadisticas();
+
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
     // Función para mostrar mensajes
     function mostrarMensaje(msg, tipo) {
         const div = document.createElement('div');
@@ -392,7 +507,11 @@ Total ejercicios: ${dato.total}</title>
 
     async function mostrarEstadisticas() {
         try {
+<<<<<<< HEAD
             const response = await fetch(`${API_URL}/api/entrenamientos/estadisticas/${usuario._id}`);
+=======
+            const response = await fetch(`https://voleibol.onrender.com/api/entrenamientos/estadisticas/${usuario._id}`);
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
             if (!response.ok) throw new Error('Error al cargar estadísticas');
             const data = await response.json();
 
@@ -493,8 +612,11 @@ Total ejercicios: ${dato.total}</title>
     });
     // Por defecto, activar el de entrenamiento
     btnEntrenamiento.classList.add('active');
+<<<<<<< HEAD
 
     // DEPURACIÓN: Mostrar el usuario y el entrenadorId en consola
     console.log('Usuario:', usuario);
     console.log('entrenadorId:', usuario.entrenadorId);
+=======
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
 }); 

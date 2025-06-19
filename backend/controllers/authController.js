@@ -1,6 +1,9 @@
 const Usuario = require('../models/Usuario');
+<<<<<<< HEAD
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+=======
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
 
 // Código secreto para entrenadores
 const CODIGO_ENTRENADOR = 'ENTRENA-2025';
@@ -71,11 +74,16 @@ exports.login = async (req, res) => {
         }
 
         // Verificar contraseña
+<<<<<<< HEAD
         const passwordValido = await bcrypt.compare(password, usuario.password);
+=======
+        const passwordValido = await usuario.compararPassword(password);
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
         if (!passwordValido) {
             return res.status(400).json({ mensaje: 'Credenciales inválidas' });
         }
 
+<<<<<<< HEAD
         // Crear token JWT
         const token = jwt.sign(
             { id: usuario._id, rol: usuario.rol },
@@ -94,6 +102,18 @@ exports.login = async (req, res) => {
                 entrenadorId: usuario.entrenadorId
             }
         });
+=======
+        // Enviar información del usuario (sin password)
+        const usuarioRespuesta = {
+            _id: usuario._id,
+            nombre: usuario.nombre,
+            correo: usuario.correo,
+            rol: usuario.rol,
+            entrenadorId: usuario.entrenadorId
+        };
+
+        res.json(usuarioRespuesta);
+>>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
     } catch (error) {
         console.error('Error en login:', error);
         res.status(500).json({ mensaje: 'Error en el servidor' });
