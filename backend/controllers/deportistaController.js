@@ -2,7 +2,7 @@ const Usuario = require('../models/Usuario');
 const Entrenamiento = require('../models/Entrenamiento');
 
 // Obtener lista de deportistas de un entrenador
-exports.getDeportistas = async (req, res) => {
+exports.obtenerDeportistasPorEntrenador = async (req, res) => {
     try {
         const { entrenadorId } = req.params;
         

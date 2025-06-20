@@ -6,15 +6,19 @@ const entrenamientoSchema = new mongoose.Schema({
         ref: 'Usuario',
         required: true
     },
-    fecha: {
-<<<<<<< HEAD
-        type: String,
+    clubId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Club',
         required: true
-=======
+    },
+    fecha: {
         type: Date,
         required: true,
         default: Date.now
->>>>>>> ccec36d3d50f58e38df9f21950d9c1333aa75de1
+    },
+    tipoSesion: {
+        type: String,
+        trim: true
     },
     ejercicios: [{
         tipo: {
