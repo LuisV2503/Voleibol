@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_URL = 'https://voleibol-backend.onrender.com';
+    const API_URL = 'https://voleibol.onrender.com';
 
     // Elementos del formulario de registro
     const registerForm = document.getElementById('registerForm');
