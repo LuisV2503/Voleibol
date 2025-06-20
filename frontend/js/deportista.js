@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Obtener nombre del entrenador
     if (usuario.entrenadorId) {
         try {
-            const res = await fetch(`${API_URL}/api/deportistas/entrenador-info/${usuario.entrenadorId}`, {
+            const res = await fetch(`${API_URL}/api/auth/user/${usuario.entrenadorId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
