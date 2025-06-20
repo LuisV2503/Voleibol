@@ -12,9 +12,12 @@ const clubesRoutes = require('./routes/clubes');
 const app = express();
 
 // Middlewares
-// Habilitamos CORS para todos los orígenes y manejamos pre-flight.
-app.use(cors());
-app.options('*', cors()); // Habilitar pre-flight para todas las rutas
+// Habilitamos CORS para permitir solicitudes desde el frontend en Render.
+const corsOptions = {
+  origin: 'https://voleibol-1.onrender.com',
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 app.use(express.json()); // Para parsear el body de las peticiones a JSON
 
 // Conexión a la base de datos
