@@ -11,8 +11,14 @@ const clubesRoutes = require('./routes/clubes');
 
 const app = express();
 
+// Configuración de CORS
+const corsOptions = {
+    origin: 'https://voleibol-1.onrender.com', // La URL de tu frontend en Render
+    optionsSuccessStatus: 200
+};
+
 // Middlewares
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json()); // Para parsear el body de las peticiones a JSON
 
 // Conexión a la base de datos
