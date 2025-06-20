@@ -50,8 +50,30 @@
                         <form id="entrenamientoForm">
                             <input type="hidden" id="tipoSesion" value="entrenamiento">
                             <div class="mb-3">
-                                <label for="fecha" class="form-label">Fecha</label>
-                                <input type="date" class="form-control" id="fecha" required>
+                                <label class="form-label">Club</label>
+                                <select class="form-select" id="clubSeleccionado" required>
+                                    <option value="">Seleccionar club...</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Fecha</label>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <select class="form-select" id="day" required>
+                                            <option value="">Día</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <select class="form-select" id="month" required>
+                                            <option value="">Mes</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <select class="form-select" id="year" required>
+                                            <option value="">Año</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Ejercicios</label>
