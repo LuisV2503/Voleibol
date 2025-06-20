@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_URL = 'https://voleibol.onrender.com';
+    const API_URL = 'https://voleibol-backend.onrender.com';
+    const token = localStorage.getItem('token');
 
     // Verificar sesión
     const usuario = JSON.parse(localStorage.getItem('usuario'));
@@ -15,12 +16,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cerrar sesión
     document.getElementById('logoutBtn').addEventListener('click', () => {
         localStorage.removeItem('usuario');
+        localStorage.removeItem('token');
         window.location.href = 'index.html';
     });
 
     // Cargar lista de deportistas asociados
     const listaDeportistas = document.getElementById('listaDeportistas');
-    fetch(`${API_URL}/api/deportistas/entrenador/${usuario._id}`)
+    fetch(`${API_URL}/api/deportistas/entrenador/${usuario._id}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
         .then(res => {
             if (!res.ok) throw new Error('Error al cargar deportistas');
             return res.json();
@@ -116,7 +122,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // 1. Obtener todos los datos de estadísticas
-            const res = await fetch(`${API_URL}/api/deportistas/estadisticas/${usuario._id}`);
+            const res = await fetch(`${API_URL}/api/deportistas/estadisticas/${usuario._id}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
             let data = await res.json();
 
             // 2. Obtener el club seleccionado
@@ -124,10 +132,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 3. Filtrar por club si es necesario
             if (clubIdSeleccionado !== 'todos') {
-                const clubRes = await fetch(`${API_URL}/api/clubes/${clubIdSeleccionado}`);
+                const clubRes = await fetch(`${API_URL}/api/clubes/${clubIdSeleccionado}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
                 const clubData = await clubRes.json();
-                const idsMiembros = clubData.miembros.map(m => m._id);
-                data = data.filter(d => idsMiembros.includes(d.deportista._id));
+                if (clubData && clubData.miembros) {
+                    const idsMiembros = clubData.miembros.map(m => m._id);
+                    data = data.filter(d => idsMiembros.includes(d.deportista._id));
+                } else {
+                    data = []; // Si no hay datos del club, el resultado es vacío
+                }
             }
             
             // 4. Filtrar por tipo de actividad (código existente)
@@ -207,47 +221,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Funciones para manejar clubes
     async function cargarClubes() {
+        const listaClubes = document.getElementById('listaClubes');
         try {
-            const res = await fetch(`${API_URL}/api/clubes/entrenador/${usuario._id}`);
-            const clubes = await res.json();
-            const listaClubes = document.getElementById('listaClubes');
-            const clubFilter = document.getElementById('clubFilter');
-            listaClubes.innerHTML = '';
-            // Limpiar opciones viejas, manteniendo la primera ("Todos los clubes")
-            clubFilter.innerHTML = '<option value="todos" selected>Todos los clubes</option>';
-
-            clubes.forEach(club => {
-                const clubElement = document.createElement('div');
-                clubElement.className = 'list-group-item list-group-item-action flex-column align-items-start';
-                clubElement.style.cursor = 'pointer';
-                clubElement.innerHTML = `
-                    <div class="d-flex w-100 justify-content-between">
-                        <h6 class="mb-1">${club.nombre}</h6>
-                        <div class="btn-group">
-                            <button class="btn btn-sm btn-outline-primary agregar-miembros" data-club-id="${club._id}" title="Agregar miembros">
-                                <i class="bi bi-person-plus"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-secondary editar-club" data-club-id="${club._id}" title="Editar club">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger eliminar-club" data-club-id="${club._id}" title="Eliminar club">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <p class="mb-1">${club.descripcion || 'Sin descripción'}</p>
-                    <div class="collapse mt-2" id="miembros-${club._id}">
-                        <!-- Aquí se cargarán los miembros -->
-                    </div>
-                `;
-                listaClubes.appendChild(clubElement);
-
-                // Añadir opción al filtro del ranking
-                const option = document.createElement('option');
-                option.value = club._id;
-                option.textContent = club.nombre;
-                clubFilter.appendChild(option);
+            const res = await fetch(`${API_URL}/api/clubes/entrenador/${usuario._id}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
             });
+            const clubes = await res.json();
+            
+            // Renderizar lista de clubes
+            listaClubes.innerHTML = '';
+            // Llenar selector de filtro de clubes
+            clubFilter.innerHTML = '<option value="todos">Todos los clubes</option>';
+            if (clubes && clubes.length > 0) {
+                clubes.forEach(club => {
+                    const clubElement = document.createElement('div');
+                    clubElement.className = 'list-group-item list-group-item-action flex-column align-items-start';
+                    clubElement.style.cursor = 'pointer';
+                    clubElement.innerHTML = `
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">${club.nombre}</h6>
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-outline-primary agregar-miembros" data-club-id="${club._id}" title="Agregar miembros">
+                                    <i class="bi bi-person-plus"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary editar-club" data-club-id="${club._id}" title="Editar club">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger eliminar-club" data-club-id="${club._id}" title="Eliminar club">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="mb-1">${club.descripcion || 'Sin descripción'}</p>
+                        <div class="collapse mt-2" id="miembros-${club._id}">
+                            <!-- Aquí se cargarán los miembros -->
+                        </div>
+                    `;
+                    listaClubes.appendChild(clubElement);
+
+                    // Añadir opción al filtro del ranking
+                    const option = document.createElement('option');
+                    option.value = club._id;
+                    option.textContent = club.nombre;
+                    clubFilter.appendChild(option);
+                });
+            }
 
             // Agregar event listeners
             document.querySelectorAll('.list-group-item-action').forEach(item => {
@@ -273,45 +291,46 @@ document.addEventListener('DOMContentLoaded', () => {
                     mostrarModalMiembros(clubId);
                 });
             });
-        } catch (error) {
-            console.error('Error al cargar clubes:', error);
-            mostrarMensaje('Error al cargar los clubes', 'danger');
+
+            // Cargar estadísticas después de cargar los clubes
+            cargarEstadisticasYRanking();
+
+        } catch (err) {
+            console.error('Error al cargar clubes:', err);
+            listaClubes.innerHTML = '<div class="text-center text-danger">Error al cargar clubes.</div>';
         }
     }
 
-    // Event listener para crear club
-    document.getElementById('guardarClub').addEventListener('click', async () => {
+    // Guardar nuevo club
+    const formCrearClub = document.getElementById('formCrearClub');
+    formCrearClub.addEventListener('submit', async e => {
+        e.preventDefault();
         const nombre = document.getElementById('nombreClub').value;
         const descripcion = document.getElementById('descripcionClub').value;
-
         try {
-            const res = await fetch(`${API_URL}/api/clubes`, {
+            await fetch(`${API_URL}/api/clubes`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    nombre,
-                    descripcion,
-                    entrenadorId: usuario._id
-                })
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ nombre, descripcion, entrenadorId: usuario._id })
             });
-
-            if (res.ok) {
-                mostrarMensaje('Club creado exitosamente', 'success');
-                document.getElementById('crearClubModal').querySelector('.btn-close').click();
-                document.getElementById('crearClubForm').reset();
-                cargarClubes();
-            } else {
-                mostrarMensaje('Error al crear el club', 'danger');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            mostrarMensaje('Error al conectar con el servidor', 'danger');
+            const modal = bootstrap.Modal.getInstance(document.getElementById('modalCrearClub'));
+            modal.hide();
+            cargarClubes();
+            mostrarMensaje('Club creado exitosamente', 'success');
+        } catch (err) {
+            console.error('Error al crear club:', err);
+            mostrarMensaje('Error al crear el club', 'danger');
         }
     });
 
     async function mostrarModalEditarClub(clubId) {
         try {
-            const res = await fetch(`${API_URL}/api/clubes/${clubId}`);
+            const res = await fetch(`${API_URL}/api/clubes/${clubId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
             const club = await res.json();
             
             document.getElementById('clubIdEditar').value = clubId;
@@ -333,7 +352,10 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const res = await fetch(`${API_URL}/api/clubes/${clubId}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({ nombre, descripcion })
             });
 
@@ -354,7 +376,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (confirm('¿Estás seguro de que deseas eliminar este club? Esta acción no se puede deshacer.')) {
             try {
                 const res = await fetch(`${API_URL}/api/clubes/${clubId}`, {
-                    method: 'DELETE'
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
 
                 if (res.ok) {
@@ -376,7 +399,9 @@ document.addEventListener('DOMContentLoaded', () => {
         listaDeportistas.innerHTML = '<div class="text-center">Cargando deportistas...</div>';
 
         try {
-            const res = await fetch(`${API_URL}/api/clubes/disponibles/${clubId}`);
+            const res = await fetch(`${API_URL}/api/clubes/disponibles/${clubId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
             const deportistas = await res.json();
             
             listaDeportistas.innerHTML = deportistas.length ? '' : '<div class="text-center">No hay deportistas disponibles</div>';
@@ -405,7 +430,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     try {
                         const res = await fetch(`${API_URL}/api/clubes/${clubId}/miembros`, {
                             method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
                             body: JSON.stringify({ deportistaId })
                         });
 
@@ -438,7 +466,9 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.show();
 
         try {
-            const res = await fetch(`${API_URL}/api/clubes/${clubId}`);
+            const res = await fetch(`${API_URL}/api/clubes/${clubId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
             const club = await res.json();
             modalTitulo.textContent = `Miembros de ${club.nombre}`;
             
@@ -471,7 +501,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (confirm('¿Estás seguro de que quieres eliminar a este deportista del club?')) {
             try {
                 const res = await fetch(`${API_URL}/api/clubes/${clubId}/miembros/${miembroId}`, {
-                    method: 'DELETE'
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
 
                 if (res.ok) {
@@ -516,39 +547,48 @@ document.addEventListener('DOMContentLoaded', () => {
         const tipoActividadSelect = document.getElementById('modalTipoActividad');
 
         // Función para cargar y filtrar datos según tipo de actividad
-        async function cargarDatosModal(tipoActividad) {
+        async function cargarDatosModal(tipoActividad = 'todos') {
             container.innerHTML = '<div class="text-center">Cargando estadísticas...</div>';
             try {
-                const res = await fetch(`${API_URL}/api/entrenamientos/deportista/${deportista._id}`);
-                if (!res.ok) throw new Error('No se pudieron cargar los entrenamientos');
-                const entrenamientos = await res.json();
-                console.log('Entrenamientos recibidos:', entrenamientos);
+                // Obtener entrenamientos
+                let entrenamientosRes = await fetch(`${API_URL}/api/entrenamientos/deportista/${deportista._id}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                let entrenamientos = await entrenamientosRes.json();
+                
                 // Filtrar por tipo de actividad
-                let entrenamientosFiltrados = entrenamientos;
                 if (tipoActividad !== 'todos') {
-                    entrenamientosFiltrados = entrenamientos.filter(e => (e.tipoSesion || 'entrenamiento') === tipoActividad);
+                    entrenamientos = entrenamientos.filter(e => (e.tipoSesion || 'entrenamiento') === tipoActividad);
                 }
-                // Calcular estadísticas
-                const tipos = ['saque','armada','remate','bloqueo','defensa','recepcion','asistencia'];
-                const estadisticas = {};
-                tipos.forEach(tipo => {
-                    estadisticas[tipo] = { total: 0, exitosos: 0 };
+
+                // Obtener estadísticas
+                let estadisticasRes = await fetch(`${API_URL}/api/entrenamientos/estadisticas/${deportista._id}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
-                entrenamientosFiltrados.forEach(ent => {
-                    ent.ejercicios.forEach(ej => {
-                        if (tipos.includes(ej.tipo)) {
-                            estadisticas[ej.tipo].total++;
-                            if (ej.efectividad) estadisticas[ej.tipo].exitosos++;
-                        }
+                let estadisticasData = await estadisticasRes.json();
+                
+                // Si se filtró por actividad, recalcular estadísticas
+                if (tipoActividad !== 'todos') {
+                    const tipos = ['saque','armada','remate','bloqueo','defensa','recepcion','asistencia'];
+                    const stats = {};
+                    tipos.forEach(tipo => { stats[tipo] = { total: 0, exitosos: 0 }; });
+                    entrenamientos.forEach(ent => {
+                        ent.ejercicios.forEach(ej => {
+                            if (tipos.includes(ej.tipo)) {
+                                stats[ej.tipo].total++;
+                                if (ej.efectividad) stats[ej.tipo].exitosos++;
+                            }
+                        });
                     });
-                });
-                // Calcular porcentajes
-                const porcentajes = {};
-                tipos.forEach(tipo => {
-                    const { total, exitosos } = estadisticas[tipo];
-                    porcentajes[tipo] = total > 0 ? (exitosos / total) * 100 : 0;
-                });
-                // Mostrar porcentajes de efectividad
+                    const porcentajes = {};
+                    tipos.forEach(tipo => {
+                        const { total, exitosos } = stats[tipo];
+                        porcentajes[tipo] = total > 0 ? (exitosos / total) * 100 : 0;
+                    });
+                    estadisticasData = { estadisticas: stats, porcentajes };
+                }
+
+                // Renderizar datos en el modal
                 let html = '<div class="row mb-2">';
                 tipos.forEach(ejercicio => {
                     html += `<div class='col-6 col-md-4 mb-1'><strong>${ejercicio.charAt(0).toUpperCase() + ejercicio.slice(1)}:</strong> <span class='text-primary'>${porcentajes[ejercicio].toFixed(1)}%</span></div>`;
@@ -568,7 +608,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Procesar evolución
                 const fechas = [];
                 const datos = {saque:[],armada:[],remate:[],bloqueo:[],defensa:[],recepcion:[],asistencia:[]};
-                entrenamientosFiltrados.slice().reverse().forEach(ent => {
+                entrenamientos.slice().reverse().forEach(ent => {
                     const fecha = new Date(ent.fecha).toLocaleDateString();
                     fechas.push(fecha);
                     const tiposEj = {saque:[],armada:[],remate:[],bloqueo:[],defensa:[],recepcion:[],asistencia:[]};

@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const API_URL = 'https://voleibol.onrender.com';
+    const API_URL = 'https://voleibol-backend.onrender.com';
+    const token = localStorage.getItem('token');
 
     // Verificar sesión
     const usuario = JSON.parse(localStorage.getItem('usuario'));
@@ -90,7 +91,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Obtener nombre del entrenador
     if (usuario.entrenadorId) {
         try {
-            const res = await fetch(`${API_URL}/api/usuarios/${usuario.entrenadorId}`);
+            const res = await fetch(`${API_URL}/api/deportistas/entrenador-info/${usuario.entrenadorId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             const entrenador = await res.json();
             if (entrenador && entrenador.nombre) {
                 document.getElementById('entrenadorCorreo').textContent = entrenador.nombre;
@@ -107,13 +112,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Cerrar sesión
     document.getElementById('logoutBtn').addEventListener('click', () => {
         localStorage.removeItem('usuario');
+        localStorage.removeItem('token');
         window.location.href = 'index.html';
     });
 
     // Cargar clubes del deportista
     async function cargarClubesDeportista() {
+        if (!usuario || !usuario._id) return;
         try {
-            const res = await fetch(`${API_URL}/api/clubes/deportista/${usuario._id}`);
+            const res = await fetch(`${API_URL}/api/clubes/deportista/${usuario._id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             const clubes = await res.json();
             
             // Mostrar clubes en el perfil
@@ -137,12 +148,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Actualizar selector de clubes para el entrenamiento
             const clubSelect = document.getElementById('clubSeleccionado');
             clubSelect.innerHTML = '<option value="">Seleccionar club...</option>';
-            clubes.forEach(club => {
-                const option = document.createElement('option');
-                option.value = club._id;
-                option.textContent = club.nombre;
-                clubSelect.appendChild(option);
-            });
+            if (clubes && clubes.length > 0) {
+                clubes.forEach(club => {
+                    const option = document.createElement('option');
+                    option.value = club._id;
+                    option.textContent = club.nombre;
+                    clubSelect.appendChild(option);
+                });
+            }
         } catch (error) {
             console.error('Error al cargar clubes:', error);
             mostrarMensaje('Error al cargar los clubes', 'danger');
@@ -187,13 +200,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             clubId: clubId,
             fecha: fecha,
             ejercicios,
-            tipoSesion: tipoSesionInput.value
+            tipoSesion: document.getElementById('tipoSesion').value
         };
 
         try {
             const res = await fetch(`${API_URL}/api/entrenamientos`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify(data)
             });
             const result = await res.json();
@@ -358,13 +374,15 @@ Total ejercicios: ${dato.total}</title>
     async function cargarEstadisticas() {
         const contenedor = document.getElementById('estadisticasDeportista');
         contenedor.innerHTML = 'Cargando...';
+        if (!usuario || !usuario._id) return;
         try {
-            const res = await fetch(`${API_URL}/api/entrenamientos/deportista/${usuario._id}`);
-            const entrenamientos = await res.json();
-            // Obtener estadísticas agregadas
-            const resStats = await fetch(`${API_URL}/api/entrenamientos/estadisticas/${usuario._id}`);
-            const data = await resStats.json();
-            if (resStats.ok) {
+            const res = await fetch(`${API_URL}/api/entrenamientos/estadisticas/${usuario._id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await res.json();
+            if (res.ok) {
                 let html = '<div class="row">';
                 Object.entries(data.porcentajes).forEach(([ejercicio, porcentaje]) => {
                     html += `<div class='col-6 col-md-4 mb-2'><strong>${ejercicio.charAt(0).toUpperCase() + ejercicio.slice(1)}:</strong> <span class='text-primary'>${porcentaje.toFixed(1)}%</span></div>`;
@@ -372,7 +390,7 @@ Total ejercicios: ${dato.total}</title>
                 html += '</div>';
                 contenedor.innerHTML = html;
                 // Graficar nueva línea personalizada por actividad
-                graficarLineaPorActividad(entrenamientos);
+                graficarLineaPorActividad(data.entrenamientos);
             } else {
                 contenedor.innerHTML = '<span class="text-danger">No se pudieron cargar las estadísticas.</span>';
             }
