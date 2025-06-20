@@ -98,4 +98,17 @@ exports.login = async (req, res) => {
         console.error('Error en login:', error);
         res.status(500).json({ mensaje: 'Error en el servidor' });
     }
+};
+
+exports.getUserById = async (req, res) => {
+    try {
+        const usuario = await Usuario.findById(req.params.id).select('-password');
+        if (!usuario) {
+            return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+        }
+        res.json(usuario);
+    } catch (error) {
+        console.error('Error al obtener usuario:', error);
+        res.status(500).json({ mensaje: 'Error en el servidor' });
+    }
 }; 
