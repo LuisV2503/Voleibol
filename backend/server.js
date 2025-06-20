@@ -12,8 +12,9 @@ const clubesRoutes = require('./routes/clubes');
 const app = express();
 
 // Middlewares
-// Habilitamos CORS para todos los orígenes temporalmente para diagnóstico.
+// Habilitamos CORS para todos los orígenes y manejamos pre-flight.
 app.use(cors());
+app.options('*', cors()); // Habilitar pre-flight para todas las rutas
 app.use(express.json()); // Para parsear el body de las peticiones a JSON
 
 // Conexión a la base de datos
