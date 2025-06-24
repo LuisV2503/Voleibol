@@ -62,7 +62,116 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Sección de Clubes -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="mb-0">Mis Clubes</h4>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCrearClub">
+                                <i class="bi bi-plus-circle"></i> Crear Club
+                            </button>
+                        </div>
+                        <div id="listaClubes" class="list-group">
+                            <!-- Los clubes se cargarán dinámicamente aquí -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    
+    <!-- Modal para crear club -->
+    <div class="modal fade" id="modalCrearClub" tabindex="-1" aria-labelledby="modalCrearClubLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCrearClubLabel">Crear Nuevo Club</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formCrearClub">
+                        <div class="mb-3">
+                            <label for="nombreClub" class="form-label">Nombre del Club</label>
+                            <input type="text" class="form-control" id="nombreClub" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcionClub" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="descripcionClub" rows="3"></textarea>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Crear Club</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para agregar miembros -->
+    <div class="modal fade" id="agregarMiembrosModal" tabindex="-1" aria-labelledby="agregarMiembrosModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="agregarMiembrosModalLabel">Agregar Miembros</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="clubIdMiembros">
+                    <div id="listaDeportistasModal" class="list-group">
+                        <!-- Los deportistas disponibles se cargarán aquí -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para ver miembros -->
+    <div class="modal fade" id="verMiembrosModal" tabindex="-1" aria-labelledby="verMiembrosModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="verMiembrosModalLabel">Miembros del Club</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 id="verMiembrosModalTitulo"></h6>
+                    <ul id="listaMiembrosClub" class="list-group">
+                        <!-- Los miembros se cargarán aquí -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para editar club -->
+    <div class="modal fade" id="editarClubModal" tabindex="-1" aria-labelledby="editarClubModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarClubModalLabel">Editar Club</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="clubIdEditar">
+                    <div class="mb-3">
+                        <label for="nombreClubEditar" class="form-label">Nombre del Club</label>
+                        <input type="text" class="form-control" id="nombreClubEditar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcionClubEditar" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcionClubEditar" rows="3"></textarea>
+                    </div>
+                    <div class="d-grid">
+                        <button type="button" class="btn btn-primary" id="guardarEdicionClub">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Modal para detalles del deportista -->
     <div class="modal fade" id="modalDeportista" tabindex="-1" aria-labelledby="modalDeportistaLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl">

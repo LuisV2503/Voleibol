@@ -383,6 +383,15 @@ Total ejercicios: ${dato.total}</title>
             });
             const data = await res.json();
             if (res.ok) {
+                // Verificar si hay datos
+                if (!data.entrenamientos || data.entrenamientos.length === 0) {
+                    contenedor.innerHTML = '<div class="alert alert-info text-center">No tienes entrenamientos registrados aún. ¡Comienza registrando tu primer entrenamiento!</div>';
+                    // Limpiar el contenedor de gráficas
+                    document.getElementById('graficasEvolucionContainer').innerHTML = 
+                        '<div class="col-12 text-center text-muted">No hay datos para mostrar gráficas</div>';
+                    return;
+                }
+                
                 let html = '<div class="row">';
                 Object.entries(data.porcentajes).forEach(([ejercicio, porcentaje]) => {
                     html += `<div class='col-6 col-md-4 mb-2'><strong>${ejercicio.charAt(0).toUpperCase() + ejercicio.slice(1)}:</strong> <span class='text-primary'>${porcentaje.toFixed(1)}%</span></div>`;
@@ -395,6 +404,7 @@ Total ejercicios: ${dato.total}</title>
                 contenedor.innerHTML = '<span class="text-danger">No se pudieron cargar las estadísticas.</span>';
             }
         } catch (err) {
+            console.error('Error al cargar estadísticas:', err);
             contenedor.innerHTML = '<span class="text-danger">Error al conectar con el servidor.</span>';
         }
     }
