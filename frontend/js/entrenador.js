@@ -548,6 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Función para cargar y filtrar datos según tipo de actividad
         async function cargarDatosModal(tipoActividad = 'todos') {
+            const tipos = ['saque','armada','remate','bloqueo','defensa','recepcion','asistencia'];
             container.innerHTML = '<div class="text-center">Cargando estadísticas...</div>';
             try {
                 // Obtener entrenamientos
@@ -569,7 +570,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Si se filtró por actividad, recalcular estadísticas
                 if (tipoActividad !== 'todos') {
-                    const tipos = ['saque','armada','remate','bloqueo','defensa','recepcion','asistencia'];
                     const stats = {};
                     tipos.forEach(tipo => { stats[tipo] = { total: 0, exitosos: 0 }; });
                     entrenamientos.forEach(ent => {
