@@ -73,7 +73,8 @@ exports.obtenerEstadisticasDeportista = async (req, res) => {
 
         res.json({
             estadisticas,
-            porcentajes
+            porcentajes,
+            entrenamientos
         });
     } catch (error) {
         console.error('Error al obtener estadísticas:', error);
