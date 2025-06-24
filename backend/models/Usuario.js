@@ -29,6 +29,24 @@ const usuarioSchema = new mongoose.Schema({
         required: function() {
             return this.rol === 'deportista';
         }
+    },
+    numeroCelular: {
+        type: String,
+        trim: true
+    },
+    documento: {
+        type: String,
+        trim: true
+    },
+    rolPrincipal: {
+        type: String,
+        enum: ['Punta', 'Central', 'Opuesto', 'Armador', 'Líbero'],
+        trim: true
+    },
+    rolSecundario: {
+        type: String,
+        enum: ['Punta', 'Central', 'Opuesto', 'Armador', 'Líbero'],
+        trim: true
     }
 }, {
     timestamps: true

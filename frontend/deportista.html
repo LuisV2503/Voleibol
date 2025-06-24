@@ -24,6 +24,7 @@
                         <p class="card-text"><strong>Nombre:</strong> <span id="deportistaNombre"></span></p>
                         <p class="card-text"><strong>Correo:</strong> <span id="deportistaCorreo"></span></p>
                         <p class="card-text"><strong>Entrenador:</strong> <span id="entrenadorCorreo"></span></p>
+                        <button class="btn btn-outline-secondary mt-2 w-100" id="btnEditarPerfil"><i class="bi bi-pencil"></i> Editar perfil</button>
                     </div>
                 </div>
 
@@ -143,10 +144,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="notas" class="form-label">Notas</label>
-                                <textarea class="form-control" id="notas" rows="2"></textarea>
-                            </div>
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-success">Guardar</button>
                             </div>
@@ -160,6 +157,58 @@
                         <div id="graficasEvolucionContainer" class="row mt-4"></div>
                         <canvas id="graficaRendimiento" height="120"></canvas>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Editar Perfil -->
+    <div class="modal fade" id="modalEditarPerfil" tabindex="-1" aria-labelledby="modalEditarPerfilLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditarPerfilLabel">Editar Perfil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditarPerfil">
+                        <div class="mb-3">
+                            <label for="editarNombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="editarNombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editarNumeroCelular" class="form-label">Número Celular</label>
+                            <input type="text" class="form-control" id="editarNumeroCelular">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editarDocumento" class="form-label">Documento</label>
+                            <input type="text" class="form-control" id="editarDocumento">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editarRolPrincipal" class="form-label">Rol Principal</label>
+                            <select class="form-select" id="editarRolPrincipal" required>
+                                <option value="">Selecciona un rol</option>
+                                <option value="Punta">Punta</option>
+                                <option value="Central">Central</option>
+                                <option value="Opuesto">Opuesto</option>
+                                <option value="Armador">Armador</option>
+                                <option value="Líbero">Líbero</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editarRolSecundario" class="form-label">Rol Secundario</label>
+                            <select class="form-select" id="editarRolSecundario">
+                                <option value="">Selecciona un rol</option>
+                                <option value="Punta">Punta</option>
+                                <option value="Central">Central</option>
+                                <option value="Opuesto">Opuesto</option>
+                                <option value="Armador">Armador</option>
+                                <option value="Líbero">Líbero</option>
+                            </select>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

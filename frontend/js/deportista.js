@@ -525,4 +525,72 @@ Total ejercicios: ${dato.total}</title>
     // DEPURACIÓN: Mostrar el usuario y el entrenadorId en consola
     console.log('Usuario:', usuario);
     console.log('entrenadorId:', usuario.entrenadorId);
+
+    // --- EDICIÓN DE PERFIL ---
+    const btnEditarPerfil = document.getElementById('btnEditarPerfil');
+    const modalEditarPerfil = new bootstrap.Modal(document.getElementById('modalEditarPerfil'));
+    const formEditarPerfil = document.getElementById('formEditarPerfil');
+    const inputNombre = document.getElementById('editarNombre');
+    const inputCelular = document.getElementById('editarNumeroCelular');
+    const inputDocumento = document.getElementById('editarDocumento');
+    const selectRolPrincipal = document.getElementById('editarRolPrincipal');
+    const selectRolSecundario = document.getElementById('editarRolSecundario');
+
+    btnEditarPerfil.addEventListener('click', () => {
+        inputNombre.value = usuario.nombre || '';
+        inputCelular.value = usuario.numeroCelular || '';
+        inputDocumento.value = usuario.documento || '';
+        selectRolPrincipal.value = usuario.rolPrincipal || '';
+        // Actualizar opciones de secundario
+        actualizarOpcionesSecundario();
+        selectRolSecundario.value = usuario.rolSecundario || '';
+        modalEditarPerfil.show();
+    });
+
+    selectRolPrincipal.addEventListener('change', actualizarOpcionesSecundario);
+    function actualizarOpcionesSecundario() {
+        const principal = selectRolPrincipal.value;
+        Array.from(selectRolSecundario.options).forEach(opt => {
+            opt.disabled = (opt.value && opt.value === principal);
+        });
+        if (selectRolSecundario.value === principal) selectRolSecundario.value = '';
+    }
+
+    formEditarPerfil.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (selectRolPrincipal.value && selectRolPrincipal.value === selectRolSecundario.value) {
+            alert('El rol secundario no puede ser igual al principal.');
+            return;
+        }
+        try {
+            const res = await fetch(`${API_URL}/api/auth/editar-perfil/${usuario._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    nombre: inputNombre.value,
+                    numeroCelular: inputCelular.value,
+                    documento: inputDocumento.value,
+                    rolPrincipal: selectRolPrincipal.value,
+                    rolSecundario: selectRolSecundario.value
+                })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                // Actualizar localStorage y vista
+                Object.assign(usuario, data.usuario);
+                localStorage.setItem('usuario', JSON.stringify(usuario));
+                document.getElementById('deportistaNombre').textContent = usuario.nombre;
+                modalEditarPerfil.hide();
+                alert('Perfil actualizado correctamente');
+            } else {
+                alert(data.mensaje || 'Error al actualizar el perfil');
+            }
+        } catch (err) {
+            alert('Error al conectar con el servidor');
+        }
+    });
+    // --- FIN EDICIÓN DE PERFIL ---
 }); 

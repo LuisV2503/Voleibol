@@ -111,4 +111,25 @@ exports.getUserById = async (req, res) => {
         console.error('Error al obtener usuario:', error);
         res.status(500).json({ mensaje: 'Error en el servidor' });
     }
+};
+
+exports.editarPerfil = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nombre, numeroCelular, documento, rolPrincipal, rolSecundario } = req.body;
+        const usuario = await Usuario.findById(id);
+        if (!usuario) {
+            return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+        }
+        if (nombre) usuario.nombre = nombre;
+        if (numeroCelular) usuario.numeroCelular = numeroCelular;
+        if (documento) usuario.documento = documento;
+        if (rolPrincipal) usuario.rolPrincipal = rolPrincipal;
+        if (rolSecundario) usuario.rolSecundario = rolSecundario;
+        await usuario.save();
+        res.json({ mensaje: 'Perfil actualizado', usuario });
+    } catch (error) {
+        console.error('Error al editar perfil:', error);
+        res.status(500).json({ mensaje: 'Error en el servidor' });
+    }
 }; 

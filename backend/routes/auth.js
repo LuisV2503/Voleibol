@@ -11,4 +11,7 @@ router.post('/login', authController.login);
 // Ruta para obtener la información de un usuario por su ID
 router.get('/user/:id', authController.getUserById);
 
+// Ruta para editar el perfil del usuario
+router.put('/editar-perfil/:id', authController.editarPerfil);
+
 module.exports = router; 
