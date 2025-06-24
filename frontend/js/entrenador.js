@@ -556,19 +556,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 let entrenamientos = await entrenamientosRes.json();
-                
                 // Filtrar por tipo de actividad
                 if (tipoActividad !== 'todos') {
                     entrenamientos = entrenamientos.filter(e => (e.tipoSesion || 'entrenamiento') === tipoActividad);
                 }
-
                 // Obtener estadísticas
                 let estadisticasRes = await fetch(`${API_URL}/api/entrenamientos/estadisticas/${deportista._id}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 let estadisticasData = await estadisticasRes.json();
-                
-                // Si se filtró por actividad, recalcular estadísticas
+                let porcentajes = estadisticasData.porcentajes;
+                // Si se filtró por actividad, recalcular estadísticas y porcentajes
                 if (tipoActividad !== 'todos') {
                     const stats = {};
                     tipos.forEach(tipo => { stats[tipo] = { total: 0, exitosos: 0 }; });
@@ -580,18 +578,16 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         });
                     });
-                    const porcentajes = {};
+                    porcentajes = {};
                     tipos.forEach(tipo => {
                         const { total, exitosos } = stats[tipo];
                         porcentajes[tipo] = total > 0 ? (exitosos / total) * 100 : 0;
                     });
-                    estadisticasData = { estadisticas: stats, porcentajes };
                 }
-
                 // Renderizar datos en el modal
                 let html = '<div class="row mb-2">';
                 tipos.forEach(ejercicio => {
-                    html += `<div class='col-6 col-md-4 mb-1'><strong>${ejercicio.charAt(0).toUpperCase() + ejercicio.slice(1)}:</strong> <span class='text-primary'>${porcentajes[ejercicio].toFixed(1)}%</span></div>`;
+                    html += `<div class='col-6 col-md-4 mb-1'><strong>${ejercicio.charAt(0).toUpperCase() + ejercicio.slice(1)}:</strong> <span class='text-primary'>${porcentajes[ejercicio]?.toFixed(1) ?? '0.0'}%</span></div>`;
                 });
                 html += '</div>';
                 container.innerHTML = html + '<div class="row" id="modalGraficasEvolucion"></div>';
